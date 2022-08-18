@@ -40,4 +40,27 @@ class Employee(models.Model):
         return self.Name
 
 
+class FamilyEmergencyContacts(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    relationshipId = models.AutoField(primary_key=True)
+    relationship = models.CharField(max_length=100)
+    contactNumber = models.IntegerField()
+    Address = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.Address
+
+
+AccountTypeData = (("Salary Account","Salary Account"),
+                   ("PPF Account","PPF Account"))
+class EmployeeBankDetails(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    AccountType = models.CharField(max_length=100,choices=AccountTypeData)
+    AccountName = models.CharField(max_length=100)
+    IFSCCode = models.CharField(max_length=100)
+    BankName = models.CharField(max_length=100)
+    AccountNumber = models.IntegerField()
+
+    def __str__(self):
+        return self.AccountType
 
