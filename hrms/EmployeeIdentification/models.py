@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User #butiln User tABLE
+import datetime
 #####Token Authentication####
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -16,7 +17,7 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 class Employee(models.Model):
     empid = models.ForeignKey(User,on_delete=models.CASCADE)
     password = models.CharField(max_length=100)
-    Name = models.CharField(max_length=100,blank=True,null=True)
+    username = models.CharField(max_length=100,primary_key=True)
     Photo = models.CharField(max_length=100,blank=True,null=True)
     Mobile = models.IntegerField(blank=True,null=True)
     OfficePhone = models.IntegerField(null=True,blank=True)
@@ -37,30 +38,150 @@ class Employee(models.Model):
     Gender = models.CharField(max_length=100,blank=True,null=True)
 
     def __str__(self):
-        return self.Name
+        return self.username
 
 
 class FamilyEmergencyContacts(models.Model):
     empid = models.ForeignKey(User, on_delete=models.CASCADE)
     relationshipId = models.AutoField(primary_key=True)
-    relationship = models.CharField(max_length=100)
-    contactNumber = models.IntegerField()
+    relationshipName = models.CharField(max_length=100)
+    relationshipType = models.CharField(max_length=100)
+    contactNumber = models.IntegerField(unique=True)
     Address = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.Address
+        return str(self.relationshipId)
 
+boardTypeData = (("Intermediate", "Intermediate"),
+                 ("Graduation", "Graduation"),("Post Graduation","Post Graduation")
+                 )
+class Employeequalification(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    QualificationType = models.CharField(max_length=100, choices=boardTypeData)
+    Board = models.CharField(max_length=100)
+    Year_of_passing = models.CharField(max_length=4)
+    certificate_no = models.CharField(max_length=100,unique=True)
+    Institute = models.CharField(max_length=100)
+    Location = models.CharField(max_length=100)
+    Percentage = models.FloatField()
+
+    def str(self):
+        return self.QualificationType
+
+
+workTypeData = (("Management", "Management"),
+                ("Frontend", "Frontend"),
+                ("Backend", "Backend"),
+                ("Testing", "Testing"))
+
+
+class Workexperience(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    workId = models.AutoField(primary_key=True)
+    companyName = models.CharField(max_length=100)
+    Location = models.CharField(max_length=100)
+    Role = models.CharField(max_length=100,choices=workTypeData)
+    YearOfExperience = models.FloatField()
+
+    def _str_(self):
+        return self.companyName
+
+
+proficientLevelData = (
+                        ("HIGH", "HIGH"),
+                        ("MEDIUM", "MEDIUM"),
+                        ("LOW", "LOW")
+                      )
+
+
+class EmployeeLanguage(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    language = models.CharField(max_length=100,unique=True)
+    speak = models.CharField(max_length=100, choices=proficientLevelData)
+    read = models.CharField(max_length=100, choices=proficientLevelData)
+    write = models.CharField(max_length=100, choices=proficientLevelData)
+
+    def _str_(self):
+        return self.language
+
+
+class EmployeeRole(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    Role = models.CharField(max_length=100,primary_key=True)
+    status = models.BooleanField(default=True)
+
+    def _str_(self):
+        return self.Role
 
 AccountTypeData = (("Salary Account","Salary Account"),
                    ("PPF Account","PPF Account"))
+
+
 class EmployeeBankDetails(models.Model):
     empid = models.ForeignKey(User, on_delete=models.CASCADE)
     AccountType = models.CharField(max_length=100,choices=AccountTypeData)
     AccountName = models.CharField(max_length=100)
     IFSCCode = models.CharField(max_length=100)
     BankName = models.CharField(max_length=100)
-    AccountNumber = models.IntegerField()
+    AccountNumber = models.IntegerField(primary_key=True)
 
     def __str__(self):
         return self.AccountType
 
+
+class EmployeeProjectDetails(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    projectName = models.CharField(max_length=100)
+    clientName = models.CharField(max_length=100)
+    duration = models.FloatField()
+    status = models.BooleanField()
+    projectStartDate = models.DateField()
+    projectManager = models.CharField(max_length=100)
+    technology = models.TextField()
+
+    def _str_(self):
+        return self.projectName
+
+leaveTypeData = (
+    ("CasualLeave","CasualLeave"),
+    ("SickLeave","SickLeave"),
+)
+leaveStatusData = (
+    ("Approved","Approved"),
+    ("Pending","Pending"),
+    ("Canceled","Canceled")
+)
+
+
+class EmployeeLeave(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    leaveId = models.AutoField(primary_key=True)
+    leaveType = models.CharField(max_length=100,choices=leaveTypeData)
+    leaveDescription = models.CharField(max_length=100)
+    leaveStatus = models.CharField(max_length=100,choices=leaveStatusData )
+    attachment = models.FileField(upload_to="uploads",null=True,blank=True)
+    assigne = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.leaveStatus
+
+
+class EmployeeLeaveData(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    leaveType = models.CharField(max_length=100, choices=leaveTypeData)
+    leaveCount = models.IntegerField()
+    datetime = models.DateTimeField(default=datetime.datetime.now())
+
+    def __str__(self):
+        return self.leaveType
+
+
+class EmployeeTotalLeaveData(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    leaveType = models.CharField(max_length=100, choices=leaveTypeData,null=True,blank=True)
+    TotalleaveCount = models.IntegerField(default=0)
+    datetime = models.DateTimeField(default=datetime.datetime.now())
+
+    def __str__(self):
+        data = str(self.leaveType) + "_" + str(self.empid)
+        return data
