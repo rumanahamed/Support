@@ -21,7 +21,7 @@ urlpatterns = [
     path('api/postEmployeeworkData/',views.postEmployeeworkData.as_view()),
     path('api/getEmployeeworkData/', views.getEmployeeworkData.as_view()),
 
-    #language###############
+    #######language###############
     path('api/postEmployeelanguageData/', views.postEmployeelanguageData.as_view()),
     path('api/getEmployeelanguageData/', views.getEmployeelanguageData.as_view()),
 
@@ -44,5 +44,12 @@ urlpatterns = [
     path('api/getManagerLeaveDashboard/',views.getManagerLeaveDashboard.as_view()),
     path('api/getEmployeeLeaveDashboard/',views.getEmployeeLeaveDashboard.as_view()),
     path('api/postEmployeeLeaveApprove/',views.postEmployeeLeaveApprove.as_view()),
-    ######################################
+
+    #########ticket############
+    path('api/postEmployeeTicketCreate/',views.postEmployeeTicketCreate.as_view()),
+    path('api/getEmployeeTicketDashboard/',views.getEmployeeTicketDashboard.as_view()),
+
+    ########Announcement###########
+    path('api/postEmployeeAnnouncement/', views.postEmployeeAnnouncement.as_view()),
+    path('api/getEmployeeAnnouncement/', views.getEmployeeAnnouncement.as_view()),
 ]

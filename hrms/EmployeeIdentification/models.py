@@ -192,3 +192,42 @@ class EmployeeTotalLeaveData(models.Model):
     def __str__(self):
         data = str(self.leaveType) + "_" + str(self.empid)
         return data
+
+
+ticketStatusData = (
+    ("Unassigned Tickets","Unassigned Tickets"),
+    ("Open Tickets","Open Tickets"),
+    ("Solved Tickets","Solved Tickets")
+)
+
+ticketCategoryData = (
+    ("HR","HR"),
+    ("IT","IT"),
+    ("Salary","Salary"),
+    ("Other","Other"),
+    ("Admin","Admin")
+)
+
+
+class EmployeeTicket(models.Model):
+    empid = models.ForeignKey(User,on_delete=models.CASCADE)
+    ticketId = models.AutoField(primary_key=True)
+    ticketDescription = models.CharField(max_length=100)
+    category = models.CharField(max_length=100,choices=ticketCategoryData)
+    attachment = models.CharField(max_length=100,null=True,blank=True)
+    status = models.CharField(max_length=100,choices=ticketStatusData,default="Unassigned Tickets")
+    assigne = models.CharField(max_length=100,default="a649116")
+
+    def __str__(self):
+        return self.ticketDescription
+
+
+class EmployeeAnnouncement(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    Image = models.CharField(max_length=100,null=True,blank=True)
+    Date = models.DateTimeField(default=datetime.datetime.now())
+    Announcement = models.TextField()
+
+    def _str_(self):
+        return self.Announcement
+

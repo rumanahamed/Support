@@ -10,4 +10,6 @@ admin.site.register(EmployeeTotalLeaveData)
 admin.site.register(Employeequalification)
 admin.site.register(EmployeeLanguage)
 admin.site.register(EmployeeRole)
+admin.site.register(EmployeeTicket)
+admin.site.register(EmployeeAnnouncement)
 

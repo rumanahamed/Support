@@ -656,5 +656,96 @@ class postEmployeeLeaveApprove(APIView):
             return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
 
 
+class postEmployeeTicketCreate(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        try:
+            serializer = postEmployeeTicketCreateserializer(data=request.data)
+            if serializer.is_valid():
+                Userdata = User.objects.filter(username=request.user).values()[0]
+                id = Userdata["id"]
+
+                EmployeeTicket.objects.create(
+                    empid_id=id,
+                    **serializer.data
+                )
+                data = {"Message": "Ticket Created Successfully"}
+                return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+            return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
+
+class getEmployeeTicketDashboard(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            result = list(EmployeeTicket.objects.filter(empid_id=id).values())
+            print(result)
+            UnassignedTickets = 0
+            OpenTickets = 0
+            SolvedTickets = 0
+
+            for var in result:
+                if var["status"] == "Unassigned Tickets":
+                    UnassignedTickets = UnassignedTickets + 1
+                elif var["status"] == "Open Tickets":
+                    OpenTickets = OpenTickets + 1
+                elif var["status"] == "Solved Tickets":
+                    SolvedTickets = SolvedTickets + 1
+
+            dataLeave = {"SolvedTickets": SolvedTickets, "OpenTickets": OpenTickets, "UnassignedTickets": UnassignedTickets}
+            return JsonResponse(dataLeave, safe=False,status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
+class postEmployeeAnnouncement(APIView):
+
+    def post(self, request):
+        try:
+            serializer = postEmployeeAnnouncementSerializer(data=request.data)
+            if serializer.is_valid():
+                empid = serializer.data['empid']
+                data = User.objects.filter(username=empid).values()[0]
+                id = data["id"]
+
+                Announcement = serializer.data['Announcement']
+
+                EmployeeAnnouncement.objects.create(
+                    empid_id=id,
+                    Announcement=Announcement
+                )
+                data = {'Message': "Employee Announcement Published"}
+                return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
+
+            return JsonResponse(serializer.errors, safe=False,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False)
+
+
+class getEmployeeAnnouncement(APIView):
+
+    def get(self, request):
+        try:
+            result = EmployeeAnnouncement.objects.all()
+            print(result)
+            result2 = getEmployeeAnnouncementSeralizer(result,many=True)
+            data = {
+                'Message': "Employee Announcement",
+                "data": result2.data
+            }
+            return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
 
 

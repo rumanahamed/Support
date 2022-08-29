@@ -106,3 +106,25 @@ class postEmployeeLeaveApproveserializer(serializers.Serializer):
     leaveId = serializers.CharField(max_length=100)
     statusData = serializers.CharField(max_length=100)
 
+
+class postEmployeeTicketCreateserializer(serializers.Serializer):
+    ticketDescription = serializers.CharField(max_length=100)
+    category = serializers.CharField(max_length=100)
+    attachment = serializers.CharField(max_length=100,required=False)
+
+
+class postEmployeeAnnouncementSerializer(serializers.Serializer):
+    empid = serializers.CharField(max_length=100)
+    Image = serializers.CharField(max_length=100,required=False)
+    Announcement = serializers.JSONField()
+
+
+class getEmployeeAnnouncementSeralizer(serializers.Serializer):
+    empid = serializers.CharField(max_length=100)
+    Date = serializers.CharField(max_length=100)
+    Announcement = serializers.JSONField()
+
+
+
+
+
