@@ -142,9 +142,11 @@ class EmployeeProjectDetails(models.Model):
     def _str_(self):
         return self.projectName
 
+
 leaveTypeData = (
     ("CasualLeave","CasualLeave"),
     ("SickLeave","SickLeave"),
+    ("PrevilageLeave","PrevilageLeave")
 )
 leaveStatusData = (
     ("Approved","Approved"),
@@ -153,24 +155,29 @@ leaveStatusData = (
 )
 
 
-class EmployeeLeave(models.Model):
+class EmployeeApplyLeave(models.Model):
     empid = models.ForeignKey(User, on_delete=models.CASCADE)
     leaveId = models.AutoField(primary_key=True)
     leaveType = models.CharField(max_length=100,choices=leaveTypeData)
     leaveDescription = models.CharField(max_length=100)
-    leaveStatus = models.CharField(max_length=100,choices=leaveStatusData )
+    leaveStatus = models.CharField(max_length=100,choices=leaveStatusData,default="Pending")
     attachment = models.FileField(upload_to="uploads",null=True,blank=True)
     assigne = models.CharField(max_length=100)
+    from_date = models.DateField(null=True,blank=True)
+    to_date = models.DateField(null=True,blank=True)
+    leaveCount = models.FloatField(default=0)
 
     def __str__(self):
         return self.leaveStatus
 
 
-class EmployeeLeaveData(models.Model):
+
+class EmployeeCreditLeaveData(models.Model):
     empid = models.ForeignKey(User, on_delete=models.CASCADE)
     leaveType = models.CharField(max_length=100, choices=leaveTypeData)
     leaveCount = models.IntegerField()
     datetime = models.DateTimeField(default=datetime.datetime.now())
+    month = models.CharField(max_length=100)
 
     def __str__(self):
         return self.leaveType

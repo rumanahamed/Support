@@ -37,9 +37,12 @@ urlpatterns = [
     path('api/postEmployeeProjectData/', views.postEmployeeProjectData.as_view()),
     path('api/getEmployeeProjectData/', views.getEmployeeProjectData.as_view()),
 
-
-    path('api/postEmployeeLeaveAllocation/',views.postEmployeeLeaveAllocation.as_view()),
+    #######leave#####################
+    path('api/postEmployeeLeaveCredit/',views.postEmployeeLeaveCredit.as_view()),
     path('api/getEmployeeLeaveData/',views.getEmployeeLeaveData.as_view()),
-    #path('api/getEmployeeLeaveDashboard/',views.getEmployeeLeaveData.as_view()),
-
+    path('api/postEmployeeLeaveApply/',views.postEmployeeLeaveApply.as_view()),
+    path('api/getManagerLeaveDashboard/',views.getManagerLeaveDashboard.as_view()),
+    path('api/getEmployeeLeaveDashboard/',views.getEmployeeLeaveDashboard.as_view()),
+    path('api/postEmployeeLeaveApprove/',views.postEmployeeLeaveApprove.as_view()),
+    ######################################
 ]

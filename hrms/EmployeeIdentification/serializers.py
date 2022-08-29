@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from .models import *
 
 class EmployeeOnboardSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=100)
@@ -46,10 +46,11 @@ class postEmployeeLanguageDataSerializer(serializers.Serializer):
     proficientLevel = serializers.CharField(max_length=100)
 
 
-class postEmployeeLeaveAllocationSerializer(serializers.Serializer):
+class postEmployeeLeaveCreditSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=100)
     leaveType = serializers.CharField(max_length=100)
     leaveCount = serializers.IntegerField()
+    month = serializers.CharField(max_length=100)
 
 
 class EmployeeProfileMenuSerializer(serializers.Serializer):
@@ -91,3 +92,17 @@ class postEmployeeprojectSerializer(serializers.Serializer):
     projectStartDate = serializers.DateField()
     projectManager = serializers.CharField(max_length=100)
     technology = serializers.JSONField()
+
+class postEmployeeLeaveApplyserializer(serializers.Serializer):
+    leaveType = serializers.CharField(max_length=100)
+    leaveDescription = serializers.CharField(max_length=100)
+    attachment = serializers.FileField(required=False)
+    from_date = serializers.DateField()
+    to_date = serializers.DateField()
+
+
+class postEmployeeLeaveApproveserializer(serializers.Serializer):
+    empid = serializers.CharField(max_length=100)
+    leaveId = serializers.CharField(max_length=100)
+    statusData = serializers.CharField(max_length=100)
+

@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 import datetime
 
+
 class EmployeeOnboardRegister(APIView):
     def post(self,request):
         try:
@@ -30,8 +31,10 @@ class EmployeeOnboardRegister(APIView):
                 )
 
                 #EmployeeLeaveIntialization
-                # EmployeeTotalLeaveData.objects.create(empid_id = id,leaveType="CasualLeave")
-                # EmployeeTotalLeaveData.objects.create(empid_id=id, leaveType="SickLeave")
+                EmployeeTotalLeaveData.objects.create(empid_id = id,leaveType="CasualLeave")
+                EmployeeTotalLeaveData.objects.create(empid_id=id, leaveType="SickLeave")
+                EmployeeTotalLeaveData.objects.create(empid_id=id, leaveType="PrevilageLeave")
+
                 data = {'Message': "Employee Onboard Successfully"}
                 return JsonResponse(data, safe=False)
             return JsonResponse(serializer.errors, safe=False)
@@ -202,30 +205,31 @@ class updateEmployeeBankData(APIView):
             return JsonResponse(str(e), safe=False)
 
 
-class postEmployeeLeaveAllocation(APIView):
+class postEmployeeLeaveCredit(APIView):
     def post(self, request):
         try:
-            serializer = postEmployeeLeaveAllocationSerializer(data=request.data)
+            serializer = postEmployeeLeaveCreditSerializer(data=request.data)
             if serializer.is_valid():
                 username = serializer.data["username"]
                 leaveType = serializer.data["leaveType"]
                 leaveCount = serializer.data["leaveCount"]
-
+                month = serializer.data["month"]
                 if User.objects.filter(username=username).exists():
                     data = User.objects.filter(username=username).values()[0]
                     id = data["id"]
 
-                    EmployeeLeaveData.objects.create(
+                    EmployeeCreditLeaveData.objects.create(
                         empid_id=id,
                         leaveType=leaveType,
                         leaveCount=leaveCount,
+                        month= month
                     )
 
                     leaveCountData = EmployeeTotalLeaveData.objects.filter(empid_id=id,leaveType = leaveType).values()[0]
                     NewLeaveCount = int(leaveCountData["TotalleaveCount"]) + int(leaveCount)
                     print(NewLeaveCount)
 
-                    EmployeeTotalLeaveData.objects.filter(empid_id=id).update(TotalleaveCount=NewLeaveCount)
+                    EmployeeTotalLeaveData.objects.filter(empid_id=id,leaveType = leaveType).update(TotalleaveCount=NewLeaveCount)
                     data = {'Message': "Employee Leave Updated Successfully"}
                     return JsonResponse(data, safe=False)
 
@@ -247,7 +251,7 @@ class getEmployeeLeaveData(APIView):
             Userdata = User.objects.filter(username=request.user).values()[0]
             id = Userdata["id"]
 
-            result = list(EmployeeLeaveData.objects.filter(empid_id=id).values())
+            result = list(EmployeeTotalLeaveData.objects.filter(empid_id=id).values())
             print(result)
             data = {
                 'Message': "Employee Details Leave Data",
@@ -256,6 +260,62 @@ class getEmployeeLeaveData(APIView):
             return JsonResponse(data, safe=False)
         except Exception as e:
             return JsonResponse(str(e), safe=False)
+
+
+class postEmployeeLeaveApply(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def post(self,request):
+        try:
+            serializer = postEmployeeLeaveApplyserializer(data=request.data)
+            if serializer.is_valid():
+                Userdata = User.objects.filter(username=request.user).values()[0]
+                id = Userdata["id"]
+                leaveType = serializer.data["leaveType"]
+                leaveDescription= serializer.data["leaveDescription"]
+                assigne= id  #Manger_id
+                date_format = "%Y-%m-%d"
+                from_date=serializer.data["from_date"]
+                to_date=serializer.data["to_date"]
+                print(from_date,type(from_date))
+                a = datetime.datetime.strptime(from_date, date_format)
+                print(a,type(a))
+                b = datetime.datetime.strptime(to_date, date_format)
+                leaveCount = (b - a).days
+                print(leaveCount,type(leaveCount))
+                EmployeeApplyLeave.objects.create(
+                    empid_id = id,
+                    leaveType=leaveType,
+                    assigne=assigne,
+                    from_date=from_date,
+                    to_date=to_date,
+                    leaveCount=leaveCount
+                )
+                data={"Message":"Leave Applied Successfully"}
+                return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
+            return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
+class getManagerLeaveDashboard(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def get(self,request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            LeaveData = list(EmployeeApplyLeave.objects.filter(assigne=id).values())
+
+            data={
+                    "Message": "Leave List Data",
+                    "DATA": LeaveData
+                }
+            return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
 
 class EmployeeLandingPage(APIView):
     authentication_classes = [TokenAuthentication]
@@ -542,3 +602,59 @@ class getEmployeeProjectData(APIView):
             return JsonResponse(data, safe=False)
         except Exception as e:
             return JsonResponse(str(e), safe=False)
+
+
+class getEmployeeLeaveDashboard(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            result = list(EmployeeApplyLeave.objects.filter(empid_id=id).values())
+            print(result)
+            approvedCount=0
+            PendingCount=0
+            CanceledCount=0
+
+            for var in result:
+                if var["leaveStatus"] == "Pending":
+                    PendingCount=PendingCount+1
+                elif var["leaveStatus"] == "Canceled":
+                    CanceledCount=CanceledCount+1
+                elif var["leaveStatus"] == "Approved":
+                    approvedCount=approvedCount+1
+
+            dataLeave = {"Approved": approvedCount, "Pending": PendingCount, "Canceled": CanceledCount}
+            return JsonResponse(dataLeave, safe=False)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False)
+
+
+class postEmployeeLeaveApprove(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def post(self,request):
+        try:
+            serializer = postEmployeeLeaveApproveserializer(data=request.data)
+            if serializer.is_valid():
+                Userdata = User.objects.filter(username=request.user).values()[0]
+                id = Userdata["id"]
+
+                empid = serializer.data["empid"]
+                leaveId = serializer.data["leaveId"]
+                statusData = serializer.data["statusData"]
+
+                EmployeeApplyLeave.objects.filter(empid=empid,leaveId=leaveId,assigne=id).update(leaveStatus=statusData)
+
+                data={"Message": "Leave Updated Successfully"}
+                return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+            return JsonResponse(serializer.errors, safe=False,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
