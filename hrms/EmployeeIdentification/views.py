@@ -748,4 +748,77 @@ class getEmployeeAnnouncement(APIView):
 
 
 
+class postEmployeeSkillManagement(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
+    def post(self,request):
+            try:
+                serializer = postEmployeeSkillManagementSerializer(data=request.data)
+                if serializer.is_valid():
+                    data = User.objects.filter(username=request.user).values()[0]
+                    id = data["id"]
+
+                    SkillManagement.objects.create(
+                        empid_id=id,
+                        **serializer.data
+                    )
+                    data = {'Message': "Employee skill created  Successfully"}
+                    return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+                return JsonResponse(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
+class getEmployeeSkillManagement(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            result = list(SkillManagement.objects.filter(empid_id=id).values())
+            print(result)
+            data = {
+                'Message': "Employee Skill Details",
+                "data": result
+            }
+            return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
+class getEmployeeSkillDashboard(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            result = list(SkillManagement.objects.filter(empid_id=id).values())
+            print(result)
+            SkillCount=0
+            BeginnerCount = 0
+            IntermediateCount = 0
+            AdvancedCount =0
+
+
+            for var in result:
+                if "SkillName" in var.keys():
+                    SkillCount = SkillCount + 1
+                if var["ProficientLevel"] == "Beginner":
+                        BeginnerCount = BeginnerCount + 1
+                        print(BeginnerCount)
+                elif var["ProficientLevel"] == "Intermediate":
+                        IntermediateCount = IntermediateCount + 1
+                elif var["ProficientLevel"] == "Advanced":
+                        AdvancedCount = AdvancedCount + 1
+
+            dataSkill = {"SkillCount":SkillCount,"Beginner":BeginnerCount, "Intermediate": IntermediateCount ,"Advanced":AdvancedCount}
+            return JsonResponse(dataSkill, safe=False,status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)

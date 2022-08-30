@@ -231,3 +231,20 @@ class EmployeeAnnouncement(models.Model):
     def _str_(self):
         return self.Announcement
 
+
+SkillTypeData = (
+    ("Beginner","Beginner"),
+    ("Intermediate","Intermediate"),
+    ("Advanced","Advanced"))
+
+
+class SkillManagement(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    SkillId = models.AutoField(primary_key=True)
+    SkillName = models.CharField(max_length=100)
+    ProficientLevel=models.CharField(max_length=100,choices=SkillTypeData)
+    Experience=models.FloatField()
+    LastUsed = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.SkillName

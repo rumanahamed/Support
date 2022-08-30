@@ -125,6 +125,10 @@ class getEmployeeAnnouncementSeralizer(serializers.Serializer):
     Announcement = serializers.JSONField()
 
 
-
+class postEmployeeSkillManagementSerializer(serializers.Serializer):
+    SkillName = serializers.CharField(max_length=100)
+    ProficientLevel = serializers.CharField(max_length=100)
+    Experience = serializers.FloatField()
+    LastUsed = serializers.CharField(max_length=100)
 
 

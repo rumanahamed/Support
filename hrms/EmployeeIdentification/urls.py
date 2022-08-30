@@ -52,4 +52,9 @@ urlpatterns = [
     ########Announcement###########
     path('api/postEmployeeAnnouncement/', views.postEmployeeAnnouncement.as_view()),
     path('api/getEmployeeAnnouncement/', views.getEmployeeAnnouncement.as_view()),
+
+    ########SkillManagment###########
+    path('api/postEmployeeSkillManagement/', views.postEmployeeSkillManagement.as_view()),
+    path('api/getEmployeeSkillManagement/', views.getEmployeeSkillManagement.as_view()),
+    path('api/getEmployeeSkillDashboard/', views.getEmployeeSkillDashboard.as_view()),
 ]
