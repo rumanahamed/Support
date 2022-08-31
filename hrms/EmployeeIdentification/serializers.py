@@ -132,3 +132,26 @@ class postEmployeeSkillManagementSerializer(serializers.Serializer):
     LastUsed = serializers.CharField(max_length=100)
 
 
+class postEmployeePayrollManagementSerializer(serializers.Serializer):
+    salarySlip = serializers.CharField(max_length=100)
+    taxSheet = serializers.CharField(max_length=100)
+    month = serializers.CharField(max_length=100)
+    year = serializers.CharField(max_length=100)
+
+class postEmployeeUploadImagesSerializer(serializers.Serializer):
+    Photo = serializers.CharField(max_length=100)
+
+
+class postEmployeePassportDataSerializer(serializers.Serializer):
+    PassportNumber = serializers.CharField(max_length=100)
+    PlaceOfIssue = serializers.CharField(max_length=100)
+    DateOfIssue = serializers.DateField()
+    DateOfExpire = serializers.DateField()
+
+
+class postEmployeeVisaAndPermitDataSerializer(serializers.Serializer):
+    CountryName = serializers.CharField(max_length=10)
+    Citizen = serializers.CharField(max_length=100)
+    permitType = serializers.CharField(max_length=100)
+    DateOfIssue = serializers.DateField()
+    DateOfExpire = serializers.DateField()

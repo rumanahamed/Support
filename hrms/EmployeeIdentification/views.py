@@ -822,3 +822,197 @@ class getEmployeeSkillDashboard(APIView):
             return JsonResponse(dataSkill, safe=False,status=status.HTTP_200_OK)
         except Exception as e:
             return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
+class postEmployeePayrollManagement(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = postEmployeePayrollManagementSerializer(data=request.data)
+            if serializer.is_valid():
+                data = User.objects.filter(username=request.user).values()[0]
+                id = data["id"]
+
+                EmployeePayroll.objects.create(
+                    empid_id=id,
+                    **serializer.data
+                )
+                data = {'Message': "Employee Payroll Uploaded  Successfully"}
+                return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class getEmployeePayrollManagement(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            result = list(EmployeePayroll.objects.filter(empid_id=id).values())
+            print(result)
+            data = {
+                'Message': "Employee Payroll Details",
+                "data": result
+            }
+            return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
+
+class postEmployeeUploadImages(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = postEmployeeUploadImagesSerializer(data=request.data)
+            if serializer.is_valid():
+                data = User.objects.filter(username=request.user).values()[0]
+                id = data["id"]
+                Photo = serializer.data['Photo']
+
+                Employee.objects.create(
+
+                    empid_id=id,
+                    Photo=Photo,
+
+                )
+                data = {'Message': "Employee  image upload Successfully"}
+                return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+            return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
+
+class updateEmployeeUploadImages(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = postEmployeeUploadImagesSerializer(data=request.data)
+            if serializer.is_valid():
+                data = User.objects.filter(username=request.user).values()[0]
+                id = data["id"]
+                Photo = serializer.data['Photo']
+
+                Employee.objects.filter(empid_id=id).update(Photo=Photo)
+                data = {'Message': "Employee  image upload Successfully"}
+                return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+            return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
+
+class getEmployeeImages(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            result = Employee.objects.filter(empid_id=id).values()[0]
+            print(result)
+            data = {
+                'Message': "Employee  Image details",
+                "data": result
+            }
+            return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
+class postEmployeePassportData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = postEmployeePassportDataSerializer(data=request.data)
+            if serializer.is_valid():
+                data = User.objects.filter(username=request.user).values()[0]
+                id = data["id"]
+
+                EmployeePassport.objects.create(
+                    empid_id=id,
+                    **serializer.data
+                )
+                data = {'Message': "Employee Passport detail Created Successfully"}
+                return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+
+            return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
+
+class getEmployeePassportData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            result = list(EmployeePassport.objects.filter(empid_id=id).values())
+            print(result)
+            data = {
+                'Message': "Employee Passport Details",
+                "data": result
+            }
+            return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
+class postEmployeeVisaAndPermitData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = postEmployeeVisaAndPermitDataSerializer(data=request.data)
+            if serializer.is_valid():
+                data = User.objects.filter(username=request.user).values()[0]
+                id = data["id"]
+
+                EmployeeVisaAndPermit.objects.create(
+                    empid_id=id,
+                    **serializer.data
+                )
+                data = {'Message': "Employee Visa & Permit detail Created Successfully"}
+                return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+
+            return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
+
+class getEmployeeVisaAndPermitData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            result = list(EmployeeVisaAndPermit.objects.filter(empid_id=id).values())
+            print(result)
+            data = {
+                'Message': "Employee Visa & Permit Details",
+                "data": result
+            }
+            return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)

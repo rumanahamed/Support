@@ -12,6 +12,14 @@ urlpatterns = [
     path('api/postEmployeeFamilyData/',views.postEmployeeFamilyData.as_view()),
     path('api/getEmployeeFamilyData/',views.getEmployeeFamilyData.as_view()),
     path('api/updateEmployeeFamilyData/',views.updateEmployeeFamilyData.as_view()),
+    path('api/postEmployeeUploadImages/',views.postEmployeeUploadImages.as_view()),
+    path('api/updateEmployeeUploadImages/',views.updateEmployeeUploadImages.as_view()),
+    path('api/getEmployeeImages/',views.getEmployeeImages.as_view()),
+    path('api/postEmployeePassportData/',views.postEmployeePassportData.as_view()),
+    path('api/getEmployeePassportData/', views.getEmployeePassportData.as_view()),
+    path('api/postEmployeeVisaAndPermitData/',views.postEmployeeVisaAndPermitData.as_view()),
+    path('api/getEmployeeVisaAndPermitData/', views.getEmployeeVisaAndPermitData.as_view()),
+
 
     ####QualiFicationDetails#####
     path('api/postEmployeequlificationData/',views.postEmployeequalificationData.as_view()),
@@ -57,4 +65,8 @@ urlpatterns = [
     path('api/postEmployeeSkillManagement/', views.postEmployeeSkillManagement.as_view()),
     path('api/getEmployeeSkillManagement/', views.getEmployeeSkillManagement.as_view()),
     path('api/getEmployeeSkillDashboard/', views.getEmployeeSkillDashboard.as_view()),
+
+    #########payroll########################
+    path('api/postEmployeePayrollManagement/', views.postEmployeePayrollManagement.as_view()),
+    path('api/getEmployeePayrollManagement/', views.getEmployeePayrollManagement.as_view()),
 ]

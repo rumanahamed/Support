@@ -248,3 +248,42 @@ class SkillManagement(models.Model):
 
     def __str__(self):
         return self.SkillName
+
+
+class EmployeePayroll(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    salarySlip = models.CharField(max_length=100,primary_key=True)
+    taxSheet = models.CharField(max_length=100,unique=True)
+    month = models.CharField(max_length=100)
+    year = models.CharField(max_length=100)
+
+    def __str__(self):
+        data = str(self.month) + str(self.year)
+        return data
+
+
+class EmployeePassport(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    PassportNumber = models.CharField(max_length=100,unique=True)
+    PlaceOfIssue = models.CharField(max_length=100)
+    DateOfIssue = models.DateField()
+    DateOfExpire = models.DateField()
+
+    def _str_(self):
+        return self.PassportNumber
+
+
+class EmployeeVisaAndPermit(models.Model):
+    empid = models.ForeignKey(User, on_delete=models.CASCADE)
+    VisaRecordId = models.AutoField(primary_key=True)
+    CountryName = models.CharField(max_length=10)
+    Citizen = models.BooleanField(default=False)
+    permitType = models.CharField(max_length=100)
+    DateOfIssue = models.DateField()
+    DateOfExpire = models.DateField()
+
+    def _str_(self):
+        return self.VisaRecordId
+
+
+

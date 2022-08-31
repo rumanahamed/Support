@@ -12,4 +12,8 @@ admin.site.register(EmployeeLanguage)
 admin.site.register(EmployeeRole)
 admin.site.register(EmployeeTicket)
 admin.site.register(EmployeeAnnouncement)
+admin.site.register(SkillManagement)
+admin.site.register(EmployeePayroll)
+admin.site.register(EmployeeVisaAndPermit)
+admin.site.register(EmployeePassport)
 
