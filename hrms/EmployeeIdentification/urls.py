@@ -69,4 +69,7 @@ urlpatterns = [
     #########payroll########################
     path('api/postEmployeePayrollManagement/', views.postEmployeePayrollManagement.as_view()),
     path('api/getEmployeePayrollManagement/', views.getEmployeePayrollManagement.as_view()),
+
+    ###########EmployeeOrganisationChart##########
+    path('api/getEmployeeOrganisationChart/', views.getEmployeeOrganisationChart.as_view()),
 ]

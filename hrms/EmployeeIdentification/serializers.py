@@ -5,6 +5,8 @@ class EmployeeOnboardSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=100)
     email = serializers.EmailField()
     password = serializers.CharField(max_length=100)
+    level = serializers.IntegerField()
+    ManagerId = serializers.CharField(max_length=100)
 
 
 class updateEmployeeDataSerializer(serializers.Serializer):

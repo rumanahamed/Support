@@ -18,6 +18,8 @@ class EmployeeOnboardRegister(APIView):
                 username = serializer.data['username']
                 email = serializer.data['email']
                 password = serializer.data["password"]
+                level= serializer.data["level"]
+                ManagerId= serializer.data["ManagerId"]
 
                 User.objects.create_user(username=username, password=password,email=email)
                 data = User.objects.filter(username=username).values()[0]
@@ -26,7 +28,9 @@ class EmployeeOnboardRegister(APIView):
                 Employee.objects.create(
                     empid_id = id,
                     password = password,
-                    username = username
+                    username = username,
+                    level=level,
+                    ManagerId=ManagerId
 
                 )
 
@@ -1016,3 +1020,35 @@ class getEmployeeVisaAndPermitData(APIView):
             return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
         except Exception as e:
             return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
+
+class getEmployeeOrganisationChart(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+            organisationchart = []
+            result = Employee.objects.filter(empid =id).values()[0]
+            level_result = result["level"]
+
+            higherEmployeeData = list(Employee.objects.filter(level__lt=level_result).values())
+            higherEmployeeIDList = [var["username"] for var in higherEmployeeData ]
+            lowerEmployeeData = list(Employee.objects.filter(level__gt=level_result).values())
+            lowerEmployeeIDList = [var["username"] for var in lowerEmployeeData]
+            equalEmployeeData = list(Employee.objects.filter(Q(level=level_result)))
+            equalEmployeeIDList=[]
+            for var in equalEmployeeData:
+                equalEmployeeIDList.append(var)
+            data = {
+                'Message': "Employee Organisation Chart",
+                "data": level_result,
+                "higherEmployeeIDList" : higherEmployeeIDList,
+                "lowerEmployeeIDList" : lowerEmployeeIDList,
+                "equalEmployeeIDList" : str(equalEmployeeIDList)
+            }
+            return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+

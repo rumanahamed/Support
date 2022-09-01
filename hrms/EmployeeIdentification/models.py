@@ -36,6 +36,8 @@ class Employee(models.Model):
     Location = models.CharField(max_length=100,blank=True,null=True)
     DOB = models.DateTimeField(blank=True,null=True)
     Gender = models.CharField(max_length=100,blank=True,null=True)
+    ManagerId = models.CharField(max_length=100,default="a649116")
+    level = models.IntegerField()
 
     def __str__(self):
         return self.username
