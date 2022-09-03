@@ -14,6 +14,7 @@ class updateEmployeeDataSerializer(serializers.Serializer):
     HomeAddress = serializers.CharField(max_length=100,allow_blank=True,required=False)
     WorkEmail = serializers.EmailField(allow_blank=True,allow_null=True)
     Gender = serializers.CharField(max_length=100,allow_blank=True,allow_null=True)
+    FirstName = serializers.CharField(max_length=100,allow_null=True,allow_blank=True)
 
 
 class postEmployeeFamilyDataSerializer(serializers.Serializer):
