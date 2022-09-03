@@ -85,6 +85,7 @@ class getEmployeeData(APIView):
             result["HomeAddress"] = employee_data["HomeAddress"]
             result["WorkEmail"] = employee_data["WorkEmail"]
             result["Gender"] = employee_data["Gender"]
+            result["FirstName"] = employee_data["FirstName"]
 
             data = {
                     'Message': "Employee Details",
