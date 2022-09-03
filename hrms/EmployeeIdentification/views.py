@@ -1062,13 +1062,13 @@ class userLogout(APIView):
             print(request.user)
             request.user.auth_token.delete()
 
-            return Response({
+            return JsonResponse({
                         'status': 200,
                         'message': 'Logout Successfully'
                     })
 
         except Exception as e:
-            return Response({
+            return JsonResponse({
                 'status': 400,
                 'message': 'Something went Wrong',
             })
