@@ -5,6 +5,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 urlpatterns = [
     path('api/EmployeeOnboard/',views.EmployeeOnboardRegister.as_view()), #HR
     path('api/login/',obtain_auth_token),
+    path('logout/',views.userLogout.as_view()),
     path('api/EmployeeLandingPage/',views.EmployeeLandingPage.as_view()),
     path('api/EmployeeProfileMenu/',views.EmployeeProfileMenu.as_view()),
     path('api/updateEmployeeData/',views.updateEmployeeData.as_view()),

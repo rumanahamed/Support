@@ -1053,3 +1053,22 @@ class getEmployeeOrganisationChart(APIView):
         except Exception as e:
             return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
 
+
+class userLogout(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        try:
+            print(request.user)
+            request.user.auth_token.delete()
+
+            return Response({
+                        'status': 200,
+                        'message': 'Logout Successfully'
+                    })
+
+        except Exception as e:
+            return Response({
+                'status': 400,
+                'message': 'Something went Wrong',
+            })
