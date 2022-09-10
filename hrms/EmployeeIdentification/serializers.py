@@ -61,6 +61,10 @@ class postEmployeeBankDataSerializer(serializers.Serializer):
 
 class updateEmployeeBankDataSerializer(serializers.Serializer):
     AccountNumber = serializers.IntegerField(required=False)
+    AccountType = serializers.CharField(max_length=100)
+    AccountName = serializers.CharField(max_length=100)
+    IFSCCode = serializers.CharField(max_length=100)
+    BankName = serializers.CharField(max_length=100)
 
 
 class postEmployeeLanguageDataSerializer(serializers.Serializer):

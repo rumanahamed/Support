@@ -239,8 +239,16 @@ class updateEmployeeBankData(APIView):
                 id = data["id"]
 
                 AccountNumber = serializer.data["AccountNumber"]
-                EmployeeBankDetails.objects.filter(empid_id=id,AccountNumber=AccountNumber).update(
-                    **serializer.data
+                AccountType=serializer.data["AccountType"]
+                AccountName=serializer.data["AccountName"]
+                IFSCCode = serializer.data["IFSCCode"]
+                BankName = serializer.data["BankName"]
+                EmployeeBankDetails.objects.filter(
+                    empid_id=id,AccountNumber=AccountNumber,AccountType=AccountType).update(
+                    AccountNumber=AccountNumber,
+                    AccountName=AccountName,
+                    IFSCCode=IFSCCode,
+                    BankName=BankName
                 )
                 data = {'Message': "Employee Bank Details Updated Successfully"}
                 return JsonResponse(data, safe=False)
