@@ -35,6 +35,7 @@ urlpatterns = [
     #######language###############
     path('api/postEmployeelanguageData/', views.postEmployeelanguageData.as_view()),
     path('api/getEmployeelanguageData/', views.getEmployeelanguageData.as_view()),
+    path('api/updateEmployeelanguageData/', views.updateEmployeelanguageData.as_view()),
 
     #####role############
     path('api/postEmployeeRoleData/', views.postEmployeeRoleData.as_view()),

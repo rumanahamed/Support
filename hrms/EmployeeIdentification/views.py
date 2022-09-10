@@ -566,6 +566,31 @@ class getEmployeelanguageData(APIView):
             return JsonResponse(str(e), safe=False)
 
 
+class updateEmployeelanguageData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        try:
+            serializer = updateEmployeelanguageDataSerialzer(data=request.data)
+            if serializer.is_valid():
+                print("username=", request.user)
+                data = User.objects.filter(username=request.user).values()[0]
+                id = data["id"]
+                languageID = serializer.data["id"]
+
+                EmployeeLanguage.objects.filter(empid_id=id,id=languageID).update(
+                    **serializer.data
+                )
+
+                result ={
+                "message" : "Employee Qualification Updated Updated"
+                }
+                return JsonResponse(result, safe=False, status=status.HTTP_200_OK)
+            return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
 class postEmployeeRoleData(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]

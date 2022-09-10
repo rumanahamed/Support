@@ -42,6 +42,15 @@ class updateEmployeequlificationDataSerialzer(serializers.Serializer):
     Location = serializers.CharField(max_length=100,required=False)
     Percentage = serializers.FloatField(required=False)
 
+
+class updateEmployeelanguageDataSerialzer(serializers.Serializer):
+    id = serializers.IntegerField()
+    language = serializers.CharField(max_length=100,required=False )
+    speak = serializers.CharField(max_length=100, required=False)
+    read = serializers.CharField(max_length=100, required=False)
+    write = serializers.CharField(max_length=100, required=False)
+
+
 class postEmployeeBankDataSerializer(serializers.Serializer):
     AccountType = serializers.CharField(max_length=100)
     AccountName = serializers.CharField(max_length=100)
