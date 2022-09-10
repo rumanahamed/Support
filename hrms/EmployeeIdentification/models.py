@@ -117,8 +117,8 @@ class EmployeeRole(models.Model):
     def _str_(self):
         return self.Role
 
-AccountTypeData = (("Salary Account","Salary Account"),
-                   ("PPF Account","PPF Account"))
+AccountTypeData = (("SalaryAccount","SalaryAccount"),
+                   ("PPFAccount","PPFAccount"))
 
 
 class EmployeeBankDetails(models.Model):
