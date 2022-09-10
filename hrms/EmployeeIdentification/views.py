@@ -470,7 +470,7 @@ class updateEmployeequlificationData(APIView):
                 id = data["id"]
                 qualificationId = serializer.data["id"]
 
-                Employeequalification.objects.filter(empid_id=id,qualificationId=qualificationId).update(
+                Employeequalification.objects.filter(empid_id=id,id=qualificationId).update(
                     **serializer.data
                 )
 
