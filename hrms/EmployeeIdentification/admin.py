@@ -17,4 +17,5 @@ admin.site.register(EmployeePayroll)
 admin.site.register(EmployeeVisaAndPermit)
 admin.site.register(EmployeePassport)
 admin.site.register(EmployeeProjectDetails)
+admin.site.register(Workexperience)
 
