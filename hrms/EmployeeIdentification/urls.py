@@ -43,7 +43,9 @@ urlpatterns = [
 
     #####bankDetails#######
     path('api/postEmployeeBankData/',views.postEmployeeBankData.as_view()),
+    path('api/getEmployeeSalaryBankData/<AccountType>/',views.getEmployeeSalaryBankData.as_view()),
     path('api/getEmployeeBankData/',views.getEmployeeBankData.as_view()),
+    path('api/updateEmployeeBankData/',views.updateEmployeeBankData.as_view()),
 
     ########project Details##########
     path('api/postEmployeeProjectData/', views.postEmployeeProjectData.as_view()),

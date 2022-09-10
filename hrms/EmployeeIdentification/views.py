@@ -207,6 +207,26 @@ class getEmployeeBankData(APIView):
             return JsonResponse(str(e), safe=False)
 
 
+class getEmployeeSalaryBankData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request,AccountType):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            result = list(EmployeeBankDetails.objects.filter(empid_id=id,AccountType=AccountType).values())
+            print(result)
+            data = {
+            'Message': "Employee Bank Details",
+            "data": result
+            }
+            return JsonResponse(data, safe=False)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False)
+
+
 class updateEmployeeBankData(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
