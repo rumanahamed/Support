@@ -33,7 +33,7 @@ class updateEmployeeFamilyDataSerialzer(serializers.Serializer):
 
 
 class updateEmployeequlificationDataSerialzer(serializers.Serializer):
-    qualificationId = serializers.IntegerField()
+    id = serializers.IntegerField()
     QualificationType = serializers.CharField(max_length=100,required=False)
     Board = serializers.CharField(max_length=100,required=False)
     Year_of_passing = serializers.CharField(max_length=4,required=False)
