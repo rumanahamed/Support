@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/updateEmployeeData/',views.updateEmployeeData.as_view()),
     path('api/getEmployeeData/',views.getEmployeeData.as_view()),
     path('api/postEmployeeFamilyData/',views.postEmployeeFamilyData.as_view()),
+    path('api/getEmployeeParticularFamilyData/<relationshipId>/',views.getEmployeeParticularFamilyData.as_view()),
     path('api/getEmployeeFamilyData/',views.getEmployeeFamilyData.as_view()),
     path('api/updateEmployeeFamilyData/',views.updateEmployeeFamilyData.as_view()),
     path('api/postEmployeeUploadImages/',views.postEmployeeUploadImages.as_view()),
@@ -25,6 +26,7 @@ urlpatterns = [
     ####QualiFicationDetails#####
     path('api/postEmployeequlificationData/',views.postEmployeequalificationData.as_view()),
     path('api/getEmployeequlificationData/', views.getEmployeequalificationData.as_view()),
+    path('api/updateEmployeequlificationData/', views.updateEmployeequlificationData.as_view()),
 
     ####WorkExperience#########
     path('api/postEmployeeworkData/',views.postEmployeeworkData.as_view()),

@@ -147,6 +147,25 @@ class getEmployeeFamilyData(APIView):
             return JsonResponse(str(e), safe=False)
 
 
+class getEmployeeParticularFamilyData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request,relationshipId):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+            employee_family_data = list(FamilyEmergencyContacts.objects.filter(empid=id,relationshipId=relationshipId).values())
+            data = {
+                'Message': "Employee Family Relationship Data",
+                "data": employee_family_data
+            }
+            print(type(employee_family_data))
+            return JsonResponse(data, safe=False)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False)
+
+
 class postEmployeeBankData(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -436,6 +455,33 @@ class getEmployeequalificationData(APIView):
             return JsonResponse(data, safe=False)
         except Exception as e:
             return JsonResponse(str(e), safe=False)
+
+
+class updateEmployeequlificationData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        try:
+            serializer = updateEmployeequlificationDataSerialzer(data=request.data)
+            if serializer.is_valid():
+                print("username=", request.user)
+                data = User.objects.filter(username=request.user).values()[0]
+                id = data["id"]
+                qualificationId = serializer.data["qualificationId"]
+
+                Employeequalification.objects.filter(empid_id=id,qualificationId=qualificationId).update(
+                    **serializer.data
+                )
+
+                result ={
+                "message" : "Employee Qualification Updated Updated"
+                }
+                return JsonResponse(result, safe=False, status=status.HTTP_200_OK)
+            return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
 
 class postEmployeeworkData(APIView):
     authentication_classes = [TokenAuthentication]

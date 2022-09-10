@@ -32,6 +32,16 @@ class updateEmployeeFamilyDataSerialzer(serializers.Serializer):
     Address = serializers.CharField(max_length=100,required=False)
 
 
+class updateEmployeequlificationDataSerialzer(serializers.Serializer):
+    qualificationId = serializers.IntegerField()
+    QualificationType = serializers.CharField(max_length=100,required=False)
+    Board = serializers.CharField(max_length=100,required=False)
+    Year_of_passing = serializers.CharField(max_length=4,required=False)
+    certificate_no = serializers.CharField(max_length=100,required=False)
+    Institute = serializers.CharField(max_length=100,required=False)
+    Location = serializers.CharField(max_length=100,required=False)
+    Percentage = serializers.FloatField(required=False)
+
 class postEmployeeBankDataSerializer(serializers.Serializer):
     AccountType = serializers.CharField(max_length=100)
     AccountName = serializers.CharField(max_length=100)

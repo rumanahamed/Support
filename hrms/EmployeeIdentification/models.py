@@ -57,6 +57,8 @@ class FamilyEmergencyContacts(models.Model):
 boardTypeData = (("Intermediate", "Intermediate"),
                  ("Graduation", "Graduation"),("Post Graduation","Post Graduation")
                  )
+
+
 class Employeequalification(models.Model):
     empid = models.ForeignKey(User, on_delete=models.CASCADE)
     QualificationType = models.CharField(max_length=100, choices=boardTypeData)
