@@ -584,7 +584,7 @@ class updateEmployeelanguageData(APIView):
                 )
 
                 result ={
-                "message" : "Employee Qualification Updated Updated"
+                "message" : "Employee Language Updated Successfully"
                 }
                 return JsonResponse(result, safe=False, status=status.HTTP_200_OK)
             return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
