@@ -468,7 +468,7 @@ class updateEmployeequlificationData(APIView):
                 print("username=", request.user)
                 data = User.objects.filter(username=request.user).values()[0]
                 id = data["id"]
-                qualificationId = serializer.data["qualificationId"]
+                qualificationId = serializer.data["id"]
 
                 Employeequalification.objects.filter(empid_id=id,qualificationId=qualificationId).update(
                     **serializer.data
