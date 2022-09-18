@@ -295,6 +295,28 @@ class postEmployeeLeaveCredit(APIView):
             return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
 
 
+class getEmployeeLeaveCreditDetails(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request,leavetype):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            leaveDetails = list(EmployeeCreditLeaveData.objects.filter(
+                empid_id=id,
+                leaveType=leavetype
+            ).values())
+            print(leaveDetails)
+            data = {
+                'Message': "Employee Details Leave Data",
+                "data": leaveDetails
+            }
+            return JsonResponse(data, safe=False)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False)
+
 class getEmployeeLeaveData(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -736,6 +758,34 @@ class getEmployeeLeaveDashboard(APIView):
         except Exception as e:
             return JsonResponse(str(e), safe=False)
 
+class getEmployeeTotalLeaveCount(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            result = list(EmployeeApplyLeave.objects.filter(empid_id=id).values())
+            print(result)
+            approvedCount=0
+            PendingCount=0
+            CanceledCount=0
+
+            for var in result:
+                if var["leaveStatus"] == "Pending":
+                    PendingCount=PendingCount+1
+                elif var["leaveStatus"] == "Canceled":
+                    CanceledCount=CanceledCount+1
+                elif var["leaveStatus"] == "Approved":
+                    approvedCount=approvedCount+1
+
+            dataLeave = {"Approved": approvedCount, "Pending": PendingCount, "Canceled": CanceledCount}
+            return JsonResponse(dataLeave, safe=False)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False)
+
 
 class postEmployeeLeaveApprove(APIView):
     authentication_classes = [TokenAuthentication]
@@ -758,6 +808,8 @@ class postEmployeeLeaveApprove(APIView):
             return JsonResponse(serializer.errors, safe=False,status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 class postEmployeeTicketCreate(APIView):
@@ -970,32 +1022,6 @@ class getEmployeePayrollManagement(APIView):
         except Exception as e:
             return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
 
-
-class postEmployeeUploadImages(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        try:
-            serializer = postEmployeeUploadImagesSerializer(data=request.data)
-            if serializer.is_valid():
-                data = User.objects.filter(username=request.user).values()[0]
-                id = data["id"]
-                Photo = serializer.data['Photo']
-
-                Employee.objects.create(
-
-                    empid_id=id,
-                    Photo=Photo,
-
-                )
-                data = {'Message': "Employee  image upload Successfully"}
-                return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
-            return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
-
-
 class updateEmployeeUploadImages(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -1024,12 +1050,20 @@ class getEmployeeImages(APIView):
         try:
             Userdata = User.objects.filter(username=request.user).values()[0]
             id = Userdata["id"]
-
+            finaldata = {}
             result = Employee.objects.filter(empid_id=id).values()[0]
             print(result)
+
+            result2 = EmployeeRole.objects.filter(empid_id=id, status=True).values()[0]
+            print(result2)
+
+            ImageData = result["Photo"]
+            finaldata["ImageData"] =ImageData
+            finaldata["Role"] = result2["Role"]
+
             data = {
                 'Message': "Employee  Image details",
-                "data": result
+                "data": finaldata
             }
             return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
         except Exception as e:

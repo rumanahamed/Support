@@ -79,6 +79,10 @@ class postEmployeeLeaveCreditSerializer(serializers.Serializer):
     month = serializers.CharField(max_length=100)
 
 
+class getEmployeeLeaveCreditDetailsSerializer(serializers.Serializer):
+    leaveType = serializers.CharField(max_length=100)
+
+
 class EmployeeProfileMenuSerializer(serializers.Serializer):
     menu = serializers.CharField(max_length=100)
 

@@ -14,9 +14,12 @@ urlpatterns = [
     path('api/getEmployeeParticularFamilyData/<relationshipId>/',views.getEmployeeParticularFamilyData.as_view()),
     path('api/getEmployeeFamilyData/',views.getEmployeeFamilyData.as_view()),
     path('api/updateEmployeeFamilyData/',views.updateEmployeeFamilyData.as_view()),
-    path('api/postEmployeeUploadImages/',views.postEmployeeUploadImages.as_view()),
+
+    #Images & Roles
     path('api/updateEmployeeUploadImages/',views.updateEmployeeUploadImages.as_view()),
     path('api/getEmployeeImages/',views.getEmployeeImages.as_view()),
+
+    #passport & Visa
     path('api/postEmployeePassportData/',views.postEmployeePassportData.as_view()),
     path('api/getEmployeePassportData/', views.getEmployeePassportData.as_view()),
     path('api/postEmployeeVisaAndPermitData/',views.postEmployeeVisaAndPermitData.as_view()),
@@ -53,11 +56,13 @@ urlpatterns = [
 
     #######leave#####################
     path('api/postEmployeeLeaveCredit/',views.postEmployeeLeaveCredit.as_view()),
+    path('api/getEmployeeLeaveCreditDetails/<leavetype>/',views.getEmployeeLeaveCreditDetails.as_view()),
     path('api/getEmployeeLeaveData/',views.getEmployeeLeaveData.as_view()),
     path('api/postEmployeeLeaveApply/',views.postEmployeeLeaveApply.as_view()),
     path('api/getManagerLeaveDashboard/',views.getManagerLeaveDashboard.as_view()),
     path('api/getEmployeeLeaveDashboard/',views.getEmployeeLeaveDashboard.as_view()),
     path('api/postEmployeeLeaveApprove/',views.postEmployeeLeaveApprove.as_view()),
+    path('api/getEmployeeTotalLeaveDetails/',views.getEmployeeTotalLeaveCount.as_view()),
 
     #########ticket############
     path('api/postEmployeeTicketCreate/',views.postEmployeeTicketCreate.as_view()),
