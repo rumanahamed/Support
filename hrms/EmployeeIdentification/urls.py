@@ -56,13 +56,17 @@ urlpatterns = [
 
     #######leave#####################
     path('api/postEmployeeLeaveCredit/',views.postEmployeeLeaveCredit.as_view()),
-    path('api/getEmployeeLeaveCreditDetails/<leavetype>/',views.getEmployeeLeaveCreditDetails.as_view()),
-    path('api/getEmployeeLeaveData/',views.getEmployeeLeaveData.as_view()),
-    path('api/postEmployeeLeaveApply/',views.postEmployeeLeaveApply.as_view()),
-    path('api/getManagerLeaveDashboard/',views.getManagerLeaveDashboard.as_view()),
     path('api/getEmployeeLeaveDashboard/',views.getEmployeeLeaveDashboard.as_view()),
+    path('api/getEmployeeLeaveCreditDetails/<leavetype>/',views.getEmployeeLeaveCreditDetails.as_view()),
+
+    ####LeaveAPPLY###########
+    path('api/postEmployeeLeaveApply/',views.postEmployeeLeaveApply.as_view()),
+    path('api/getEmployeeTotalLeaveDetails/<leaveStatus>/',views.getEmployeeTotalLeaveCount.as_view()),
+
+    path('api/getEmployeeLeaveData/',views.getEmployeeLeaveData.as_view()),
+    path('api/getManagerLeaveDashboard/',views.getManagerLeaveDashboard.as_view()),
     path('api/postEmployeeLeaveApprove/',views.postEmployeeLeaveApprove.as_view()),
-    path('api/getEmployeeTotalLeaveDetails/',views.getEmployeeTotalLeaveCount.as_view()),
+
 
     #########ticket############
     path('api/postEmployeeTicketCreate/',views.postEmployeeTicketCreate.as_view()),

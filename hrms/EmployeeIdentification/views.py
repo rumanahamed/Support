@@ -767,26 +767,14 @@ class getEmployeeTotalLeaveCount(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request,leaveStatus):
         try:
             Userdata = User.objects.filter(username=request.user).values()[0]
             id = Userdata["id"]
 
-            result = list(EmployeeApplyLeave.objects.filter(empid_id=id).values())
+            result = list(EmployeeApplyLeave.objects.filter(empid_id=id,leaveStatus=leaveStatus).values())
             print(result)
-            approvedCount=0
-            PendingCount=0
-            CanceledCount=0
-
-            for var in result:
-                if var["leaveStatus"] == "Pending":
-                    PendingCount=PendingCount+1
-                elif var["leaveStatus"] == "Canceled":
-                    CanceledCount=CanceledCount+1
-                elif var["leaveStatus"] == "Approved":
-                    approvedCount=approvedCount+1
-
-            dataLeave = {"Approved": approvedCount, "Pending": PendingCount, "Canceled": CanceledCount}
+            dataLeave = {"result": result}
             return JsonResponse(dataLeave, safe=False)
         except Exception as e:
             return JsonResponse(str(e), safe=False)
