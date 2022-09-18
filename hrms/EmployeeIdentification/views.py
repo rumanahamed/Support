@@ -744,6 +744,7 @@ class getEmployeeLeaveDashboard(APIView):
             approvedCount=0
             PendingCount=0
             CanceledCount=0
+            TotalLeaveCount=0
 
             for var in result:
                 if var["leaveStatus"] == "Pending":
@@ -752,8 +753,12 @@ class getEmployeeLeaveDashboard(APIView):
                     CanceledCount=CanceledCount+1
                 elif var["leaveStatus"] == "Approved":
                     approvedCount=approvedCount+1
-
-            dataLeave = {"Approved": approvedCount, "Pending": PendingCount, "Canceled": CanceledCount}
+            leaveAllocatedData = list(EmployeeTotalLeaveData.objects.filter(empid_id=id).values())
+            print("leaveAllocatedData==",leaveAllocatedData)
+            for var in leaveAllocatedData:
+                midLeave = var["TotalleaveCount"]
+                TotalLeaveCount+=midLeave
+            dataLeave = {"Approved": approvedCount, "Pending": PendingCount, "Canceled": CanceledCount,"TotalLeaveCount":TotalLeaveCount}
             return JsonResponse(dataLeave, safe=False)
         except Exception as e:
             return JsonResponse(str(e), safe=False)
