@@ -199,9 +199,9 @@ class EmployeeTotalLeaveData(models.Model):
 
 
 ticketStatusData = (
-    ("Unassigned Tickets","Unassigned Tickets"),
-    ("Open Tickets","Open Tickets"),
-    ("Solved Tickets","Solved Tickets")
+    ("UnassignedTickets","UnassignedTickets"),
+    ("OpenTickets","OpenTickets"),
+    ("SolvedTickets","SolvedTickets")
 )
 
 ticketCategoryData = (
@@ -219,7 +219,7 @@ class EmployeeTicket(models.Model):
     ticketDescription = models.CharField(max_length=100)
     category = models.CharField(max_length=100,choices=ticketCategoryData)
     attachment = models.CharField(max_length=100,null=True,blank=True)
-    status = models.CharField(max_length=100,choices=ticketStatusData,default="Unassigned Tickets")
+    status = models.CharField(max_length=100,choices=ticketStatusData,default="UnassignedTickets")
     assigne = models.CharField(max_length=100,default="a649116")
 
     def __str__(self):

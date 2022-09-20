@@ -843,11 +843,11 @@ class getEmployeeTicketDashboard(APIView):
             SolvedTickets = 0
 
             for var in result:
-                if var["status"] == "Unassigned Tickets":
+                if var["status"] == "UnassignedTickets":
                     UnassignedTickets = UnassignedTickets + 1
-                elif var["status"] == "Open Tickets":
+                elif var["status"] == "OpenTickets":
                     OpenTickets = OpenTickets + 1
-                elif var["status"] == "Solved Tickets":
+                elif var["status"] == "SolvedTickets":
                     SolvedTickets = SolvedTickets + 1
 
             dataLeave = {"SolvedTickets": SolvedTickets, "OpenTickets": OpenTickets, "UnassignedTickets": UnassignedTickets}
@@ -855,6 +855,48 @@ class getEmployeeTicketDashboard(APIView):
         except Exception as e:
             return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
 
+class getEmployeeTicketDetails(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request,ticketstatus):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            ticketDetails = list(EmployeeTicket.objects.filter(
+                empid_id=id,
+                status=ticketstatus
+            ).values())
+            print(ticketDetails)
+            data = {
+                'Message': "Employee Ticket Details",
+                "data": ticketDetails
+            }
+            return JsonResponse(data, safe=False)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False)
+
+class getEmployeeTicketHistory(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request,):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            ticketDetails = list(EmployeeTicket.objects.filter(
+                empid_id=id
+            ).values())
+            print(ticketDetails)
+            data = {
+                'Message': "Employee Ticket History Details",
+                "data": ticketDetails
+            }
+            return JsonResponse(data, safe=False)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False)
 
 class postEmployeeAnnouncement(APIView):
 

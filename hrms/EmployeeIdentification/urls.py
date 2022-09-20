@@ -71,6 +71,8 @@ urlpatterns = [
     #########ticket############
     path('api/postEmployeeTicketCreate/',views.postEmployeeTicketCreate.as_view()),
     path('api/getEmployeeTicketDashboard/',views.getEmployeeTicketDashboard.as_view()),
+    path('api/getEmployeeTicketDetails/<ticketstatus>/',views.getEmployeeTicketDetails.as_view()),
+    path('api/getEmployeeTicketHistory/',views.getEmployeeTicketHistory.as_view()),
 
     ########Announcement###########
     path('api/postEmployeeAnnouncement/', views.postEmployeeAnnouncement.as_view()),
