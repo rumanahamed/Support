@@ -1,6 +1,11 @@
 from rest_framework import serializers
 from .models import *
 
+class UploadImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = searchfileupload
+        fields = ["file"]
+
 class EmployeeOnboardSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=100)
     email = serializers.EmailField()

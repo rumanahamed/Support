@@ -59,6 +59,9 @@ boardTypeData = (("Intermediate", "Intermediate"),
                  )
 
 
+class searchfileupload(models.Model):
+    file = models.ImageField(upload_to="searchData/")
+
 class Employeequalification(models.Model):
     empid = models.ForeignKey(User, on_delete=models.CASCADE)
     QualificationType = models.CharField(max_length=100, choices=boardTypeData)

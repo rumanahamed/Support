@@ -8,7 +8,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 import datetime
-
+from pathlib import Path
 
 class EmployeeOnboardRegister(APIView):
     def post(self,request):
@@ -1103,6 +1103,38 @@ class getEmployeeImages(APIView):
             return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
         except Exception as e:
             return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
+class UploadImage(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def post(self,request):
+        try:
+            data = request.data
+            serializer = UploadImageSerializer(data = data)
+            if serializer.is_valid():
+                serializer.save()
+                print(str(serializer.data))
+                data = User.objects.filter(username=request.user).values()[0]
+                id = data["id"]
+                Photo = serializer.data["file"]
+                print(Photo)
+                current_dir_path = Path().absolute()
+                print("current_dir_path/=",current_dir_path)
+                data_path = str(current_dir_path)+"/" + Photo
+                print(data_path)
+                Employee.objects.filter(empid_id=id).update(Photo=data_path)
+                return JsonResponse({
+                        'status': 200,
+                        'message': 'Image Upload Successfully',
+                        'ImagePath': str(serializer.data)
+                        })
+        except Exception as e:
+                return JsonResponse({
+                    'status': 400,
+                    'message': 'Image Upload Failed',
+                    "error" : str(e)
+            })
 
 
 class postEmployeePassportData(APIView):

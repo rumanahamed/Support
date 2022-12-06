@@ -17,6 +17,7 @@ urlpatterns = [
 
     #Images & Roles
     path('api/updateEmployeeUploadImages/',views.updateEmployeeUploadImages.as_view()),
+    path("api/UploadImage/",views.UploadImage.as_view()),
     path('api/getEmployeeImages/',views.getEmployeeImages.as_view()),
 
     #passport & Visa
