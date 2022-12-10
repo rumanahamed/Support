@@ -127,10 +127,10 @@ AccountTypeData = (("SalaryAccount","SalaryAccount"),
 class EmployeeBankDetails(models.Model):
     empid = models.ForeignKey(User, on_delete=models.CASCADE)
     AccountType = models.CharField(max_length=100,choices=AccountTypeData)
-    AccountName = models.CharField(max_length=100)
-    IFSCCode = models.CharField(max_length=100)
-    BankName = models.CharField(max_length=100)
-    AccountNumber = models.IntegerField(primary_key=True)
+    AccountName = models.CharField(max_length=100,default="")
+    IFSCCode = models.CharField(max_length=100,default="")
+    BankName = models.CharField(max_length=100,default="")
+    AccountNumber = models.CharField(max_length=100,default="******")
 
     def __str__(self):
         return self.AccountType

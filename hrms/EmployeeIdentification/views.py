@@ -39,6 +39,10 @@ class EmployeeOnboardRegister(APIView):
                 EmployeeTotalLeaveData.objects.create(empid_id=id, leaveType="SickLeave")
                 EmployeeTotalLeaveData.objects.create(empid_id=id, leaveType="PrevilageLeave")
 
+                #EmployeeBlankSalaryData
+                EmployeeBankDetails.objects.create(empid_id=id,AccountType="SalaryAccount")
+                EmployeeBankDetails.objects.create(empid_id=id, AccountType="PPFAccount")
+
                 data = {'Message': "Employee Onboard Successfully"}
                 return JsonResponse(data, safe=False)
             return JsonResponse(serializer.errors, safe=False)
@@ -244,7 +248,7 @@ class updateEmployeeBankData(APIView):
                 IFSCCode = serializer.data["IFSCCode"]
                 BankName = serializer.data["BankName"]
                 EmployeeBankDetails.objects.filter(
-                    empid_id=id,AccountNumber=AccountNumber,AccountType=AccountType).update(
+                    empid_id=id,AccountType=AccountType).update(
                     AccountNumber=AccountNumber,
                     AccountName=AccountName,
                     IFSCCode=IFSCCode,
