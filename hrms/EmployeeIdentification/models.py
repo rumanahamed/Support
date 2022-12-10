@@ -271,10 +271,10 @@ class EmployeePayroll(models.Model):
 
 class EmployeePassport(models.Model):
     empid = models.ForeignKey(User, on_delete=models.CASCADE)
-    PassportNumber = models.CharField(max_length=100,unique=True)
-    PlaceOfIssue = models.CharField(max_length=100)
-    DateOfIssue = models.DateField()
-    DateOfExpire = models.DateField()
+    PassportNumber = models.CharField(max_length=100,default="*****")
+    PlaceOfIssue = models.CharField(max_length=100,blank=True,null=True)
+    DateOfIssue = models.DateField(blank=True,null=True)
+    DateOfExpire = models.DateField(blank=True,null=True)
 
     def _str_(self):
         return self.PassportNumber

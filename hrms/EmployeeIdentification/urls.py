@@ -21,8 +21,10 @@ urlpatterns = [
     path('api/getEmployeeImages/',views.getEmployeeImages.as_view()),
 
     #passport & Visa
-    path('api/postEmployeePassportData/',views.postEmployeePassportData.as_view()),
+    path('api/updateEmployeePassportData/',views.postEmployeePassportData.as_view()),
     path('api/getEmployeePassportData/', views.getEmployeePassportData.as_view()),
+
+
     path('api/postEmployeeVisaAndPermitData/',views.postEmployeeVisaAndPermitData.as_view()),
     path('api/getEmployeeVisaAndPermitData/', views.getEmployeeVisaAndPermitData.as_view()),
 

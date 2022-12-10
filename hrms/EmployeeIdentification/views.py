@@ -43,6 +43,8 @@ class EmployeeOnboardRegister(APIView):
                 EmployeeBankDetails.objects.create(empid_id=id,AccountType="SalaryAccount")
                 EmployeeBankDetails.objects.create(empid_id=id, AccountType="PPFAccount")
 
+                #EmployeeBlankPassportData
+                EmployeePassport.objects.create(empid_id=id)
                 data = {'Message': "Employee Onboard Successfully"}
                 return JsonResponse(data, safe=False)
             return JsonResponse(serializer.errors, safe=False)
@@ -1152,11 +1154,11 @@ class postEmployeePassportData(APIView):
                 data = User.objects.filter(username=request.user).values()[0]
                 id = data["id"]
 
-                EmployeePassport.objects.create(
+                EmployeePassport.objects.filter(
                     empid_id=id,
-                    **serializer.data
-                )
-                data = {'Message': "Employee Passport detail Created Successfully"}
+
+                ).update(**serializer.data)
+                data = {'Message': "Employee Passport detail Updated Successfully"}
                 return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
 
             return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
