@@ -27,7 +27,8 @@ urlpatterns = [
 
     path('api/postEmployeeVisaAndPermitData/',views.postEmployeeVisaAndPermitData.as_view()),
     path('api/getEmployeeVisaAndPermitData/', views.getEmployeeVisaAndPermitData.as_view()),
-
+    path('api/updateEmployeeVisaAndPermitData/',views.updateEmployeeVisaAndPermitData.as_view()),
+    path('api/deleteEmployeeVisaAndPermitData/',views.deleteEmployeeVisaAndPermitData.as_view()),
 
     ####QualiFicationDetails#####
     path('api/postEmployeequlificationData/',views.postEmployeequalificationData.as_view()),

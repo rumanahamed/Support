@@ -1208,6 +1208,60 @@ class postEmployeeVisaAndPermitData(APIView):
         except Exception as e:
             return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
 
+class updateEmployeeVisaAndPermitData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = updateEmployeeVisaAndPermitDataSerializer(data=request.data)
+
+            if serializer.is_valid():
+                VisaRecordId = serializer.data["VisaRecordId"]
+                CountryName = serializer.data["CountryName"]
+                Citizen = serializer.data["Citizen"]
+                permitType = serializer.data["permitType"]
+                DateOfIssue = serializer.data["DateOfIssue"]
+                DateOfExpire = serializer.data["DateOfExpire"]
+                data = User.objects.filter(username=request.user).values()[0]
+                id = data["id"]
+
+                EmployeeVisaAndPermit.objects.filter(
+                    empid_id=id,
+                    VisaRecordId=VisaRecordId
+                ).update(DateOfExpire=DateOfExpire,CountryName=CountryName,Citizen=Citizen,permitType=permitType,DateOfIssue=DateOfIssue)
+                data = {'Message': "Employee Visa & Permit detail Updated Successfully"}
+                return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+
+            return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
+class deleteEmployeeVisaAndPermitData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = deleteEmployeeVisaAndPermitDataSerializer(data=request.data)
+
+            if serializer.is_valid():
+                VisaRecordId = serializer.data["VisaRecordId"]
+
+                data = User.objects.filter(username=request.user).values()[0]
+                id = data["id"]
+
+                EmployeeVisaAndPermit.objects.filter(
+                    empid_id=id,
+                    VisaRecordId=VisaRecordId
+                ).delete()
+                data = {'Message': "Employee Visa & Permit detail Deleted Successfully"}
+                return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+
+            return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+
 
 class getEmployeeVisaAndPermitData(APIView):
     authentication_classes = [TokenAuthentication]

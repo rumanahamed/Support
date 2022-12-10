@@ -190,3 +190,14 @@ class postEmployeeVisaAndPermitDataSerializer(serializers.Serializer):
     permitType = serializers.CharField(max_length=100)
     DateOfIssue = serializers.DateField()
     DateOfExpire = serializers.DateField()
+
+class updateEmployeeVisaAndPermitDataSerializer(serializers.Serializer):
+        CountryName = serializers.CharField(max_length=10)
+        Citizen = serializers.CharField(max_length=100)
+        permitType = serializers.CharField(max_length=100)
+        DateOfIssue = serializers.DateField()
+        DateOfExpire = serializers.DateField()
+        VisaRecordId =serializers.IntegerField(required=False)
+
+class deleteEmployeeVisaAndPermitDataSerializer(serializers.Serializer):
+    VisaRecordId = serializers.IntegerField(required=False)
