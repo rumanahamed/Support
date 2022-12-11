@@ -1107,9 +1107,15 @@ class getEmployeeImages(APIView):
             result2 = EmployeeRole.objects.filter(empid_id=id, status=True).values()[0]
             print(result2)
 
-            ImageData = result["Photo"]
+            ImageData = [result["Photo"]]
             finaldata["ImageData"] =ImageData
             finaldata["Role"] = result2["Role"]
+            for var in ImageData:
+                print(type(var))
+                var2 = var.replace("\\","/")
+                var3 = var2.replace("//", "/")
+            print(var3)
+            finaldata["ImageData"] = var3
 
             data = {
                 'Message': "Employee  Image details",
