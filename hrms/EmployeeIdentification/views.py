@@ -363,16 +363,25 @@ class postEmployeeLeaveApply(APIView):
                 b = datetime.datetime.strptime(to_date, date_format)
                 leaveCount = (b - a).days
                 print(leaveCount,type(leaveCount))
-                EmployeeApplyLeave.objects.create(
-                    empid_id = id,
-                    leaveType=leaveType,
-                    assigne=assigne,
-                    from_date=from_date,
-                    to_date=to_date,
-                    leaveCount=leaveCount
-                )
-                data={"Message":"Leave Applied Successfully"}
-                return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
+                print(leaveType)
+
+                AvialableLeaveCount = EmployeeTotalLeaveData.objects.filter(leaveType=leaveType,empid_id=id).values()[0]["TotalleaveCount"]
+                print("AvialableLeaveCount===",AvialableLeaveCount)
+                if int(leaveCount) <= int(AvialableLeaveCount):
+                    EmployeeApplyLeave.objects.create(
+                        empid_id = id,
+                        leaveType=leaveType,
+                        assigne=assigne,
+                        from_date=from_date,
+                        to_date=to_date,
+                        leaveCount=leaveCount
+                    )
+                    data={"Message":"Leave Applied Successfully"}
+                    return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
+                else:
+                    data = {"Message": "Not Sufficient leave to Apply"}
+                    return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+
             return JsonResponse(serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
