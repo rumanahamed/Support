@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 import datetime
 from pathlib import Path
+from rest_framework.response import Response
 
 class EmployeeOnboardRegister(APIView):
     def post(self,request):
@@ -100,6 +101,27 @@ class getEmployeeData(APIView):
             return JsonResponse(data, safe=False)
         except Exception as e:
             return JsonResponse(str(e), safe=False)
+
+class getEmployeeDataName(APIView):
+    def get(self, request, ):
+            try:
+                data2 = Employee.objects.filter().values()
+                # print(data2)
+                result = []
+                for var in data2:
+                    result.append(var["username"])
+
+                return Response({
+                    'status': 200,
+                    'data': result
+                })
+
+            except Exception as e:
+                return Response({
+                    'status': 400,
+                    'message': 'Something went wrong',
+                    'errors': str(e)
+                })
 
 
 class postEmployeeFamilyData(APIView):
@@ -314,6 +336,20 @@ class getEmployeeLeaveCreditDetails(APIView):
                 empid_id=id,
                 leaveType=leavetype
             ).values())
+            print(leaveDetails)
+            data = {
+                'Message': "Employee Details Leave Data",
+                "data": leaveDetails
+            }
+            return JsonResponse(data, safe=False)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False)
+
+class getEmployeeLeaveall(APIView):
+    def get(self, request,):
+        try:
+
+            leaveDetails = list(EmployeeApplyLeave.objects.filter().values())
             print(leaveDetails)
             data = {
                 'Message': "Employee Details Leave Data",
@@ -951,6 +987,29 @@ class getEmployeeAnnouncement(APIView):
             return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
         except Exception as e:
             return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
+
+class getEmployeeAnnouncementUsername(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+            employee_data = Employee.objects.filter(empid=id).values()[0]
+            print(employee_data)
+            result = {}
+            result["username"] = employee_data["username"]
+
+            data = {
+                'Message': "Announcement Username",
+                "data": result
+            }
+            return JsonResponse(data, safe=False)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False)
+
 
 
 

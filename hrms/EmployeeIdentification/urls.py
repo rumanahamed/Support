@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/EmployeeProfileMenu/',views.EmployeeProfileMenu.as_view()),
     path('api/updateEmployeeData/',views.updateEmployeeData.as_view()),
     path('api/getEmployeeData/',views.getEmployeeData.as_view()),
+    path('api/getEmployeeDataName/',views.getEmployeeDataName.as_view()),
     path('api/postEmployeeFamilyData/',views.postEmployeeFamilyData.as_view()),
     path('api/getEmployeeParticularFamilyData/<relationshipId>/',views.getEmployeeParticularFamilyData.as_view()),
     path('api/getEmployeeFamilyData/',views.getEmployeeFamilyData.as_view()),
@@ -62,6 +63,7 @@ urlpatterns = [
     path('api/postEmployeeLeaveCredit/',views.postEmployeeLeaveCredit.as_view()),
     path('api/getEmployeeLeaveDashboard/',views.getEmployeeLeaveDashboard.as_view()),
     path('api/getEmployeeLeaveCreditDetails/<leavetype>/',views.getEmployeeLeaveCreditDetails.as_view()),
+    path('api/getEmployeeLeave/',views.getEmployeeLeaveall.as_view()),
 
     ####LeaveAPPLY###########
     path('api/postEmployeeLeaveApply/',views.postEmployeeLeaveApply.as_view()),
@@ -81,6 +83,7 @@ urlpatterns = [
     ########Announcement###########
     path('api/postEmployeeAnnouncement/', views.postEmployeeAnnouncement.as_view()),
     path('api/getEmployeeAnnouncement/', views.getEmployeeAnnouncement.as_view()),
+    path('api/getEmployeeAnnouncementName/', views.getEmployeeAnnouncementUsername.as_view()),
 
     ########SkillManagment###########
     path('api/postEmployeeSkillManagement/', views.postEmployeeSkillManagement.as_view()),
