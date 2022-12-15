@@ -89,6 +89,7 @@ urlpatterns = [
     path('api/postEmployeeSkillManagement/', views.postEmployeeSkillManagement.as_view()),
     path('api/getEmployeeSkillManagement/', views.getEmployeeSkillManagement.as_view()),
     path('api/getEmployeeSkillDashboard/', views.getEmployeeSkillDashboard.as_view()),
+    path('api/getEmployeeSkillManagement/<ProficientLevel>/', views.getEmployeeSkillType.as_view()),
 
     #########payroll########################
     path('api/postEmployeePayrollManagement/', views.postEmployeePayrollManagement.as_view()),

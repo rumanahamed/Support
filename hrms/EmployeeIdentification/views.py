@@ -1054,6 +1054,25 @@ class getEmployeeSkillManagement(APIView):
         except Exception as e:
             return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
 
+class getEmployeeSkillType(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request,ProficientLevel):
+        try:
+            Userdata = User.objects.filter(username=request.user).values()[0]
+            id = Userdata["id"]
+
+            result = list(SkillManagement.objects.filter(empid_id=id,ProficientLevel=ProficientLevel).values())
+            print(result)
+            data = {
+                'Message': "Employee Skill Details",
+                "data": result
+            }
+            return JsonResponse(data, safe=False,status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False,status=status.HTTP_400_BAD_REQUEST)
+
 
 class getEmployeeSkillDashboard(APIView):
     authentication_classes = [TokenAuthentication]
