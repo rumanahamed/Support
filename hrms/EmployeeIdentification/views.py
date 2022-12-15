@@ -1,3 +1,5 @@
+import ast
+
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.views import APIView
@@ -1385,22 +1387,31 @@ class getEmployeeOrganisationChart(APIView):
             id = Userdata["id"]
             organisationchart = []
             result = Employee.objects.filter(empid =id).values()[0]
+            print(result)
+            result2 = EmployeeRole.objects.filter(empid_id=id).values()[0]
+            print(result2)
             level_result = result["level"]
+            role_result = result2["Role"]
+
 
             higherEmployeeData = list(Employee.objects.filter(level__lt=level_result).values())
             higherEmployeeIDList = [var["username"] for var in higherEmployeeData ]
+            higherEmployeeRole = list(EmployeeRole.objects.filter(Role=role_result).values())
+            higherEmployeeRole = [var["Role"] for var in higherEmployeeRole]
             lowerEmployeeData = list(Employee.objects.filter(level__gt=level_result).values())
             lowerEmployeeIDList = [var["username"] for var in lowerEmployeeData]
             equalEmployeeData = list(Employee.objects.filter(Q(level=level_result)))
             equalEmployeeIDList=[]
             for var in equalEmployeeData:
-                equalEmployeeIDList.append(var)
+                equalEmployeeIDList.append(str(var))
             data = {
                 'Message': "Employee Organisation Chart",
-                "data": level_result,
-                "higherEmployeeIDList" : higherEmployeeIDList,
+                "Employee Level": level_result,
+                "Employee":result["username"],
+                "Role": higherEmployeeRole[0],
+                "higherEmployeeIDList": higherEmployeeIDList,
                 "lowerEmployeeIDList" : lowerEmployeeIDList,
-                "equalEmployeeIDList" : str(equalEmployeeIDList)
+                "equalEmployeeIDList" : ast.literal_eval(str(equalEmployeeIDList))
             }
             return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
         except Exception as e:
@@ -1425,3 +1436,41 @@ class userLogout(APIView):
                 'status': 400,
                 'message': 'Something went Wrong',
             })
+
+
+class getEmployeeOrganisation(APIView):
+
+    def get(self, request,username):
+        try:
+            Userdata = User.objects.filter(username=username).values()[0]
+            id = Userdata["id"]
+            organisationchart = []
+            result = Employee.objects.filter(empid_id=id).values()[0]
+            print(result)
+            result2 = EmployeeRole.objects.filter(empid_id=id).values()[0]
+            print(result2)
+            level_result = result["level"]
+            role_result = result2["Role"]
+            higherEmployeeData = list(Employee.objects.filter(level__lt=level_result).values())
+            higherEmployeeIDList = [var["username"] for var in higherEmployeeData ]
+            higherEmployeeRole = list(EmployeeRole.objects.filter(Role=role_result).values())
+            higherEmployeeRole = [var["Role"] for var in higherEmployeeRole]
+            lowerEmployeeData = list(Employee.objects.filter(level__gt=level_result).values())
+            lowerEmployeeIDList = [var["username"] for var in lowerEmployeeData]
+            equalEmployeeData = list(Employee.objects.filter(Q(level=level_result)))
+            equalEmployeeIDList=[]
+            for var in equalEmployeeData:
+                equalEmployeeIDList.append(str(var))
+            data = {
+                'Message': "Employee Organisation Chart",
+                "Employee Level": level_result,
+                "Employee":result["username"],
+                "Role": higherEmployeeRole[0],
+                "higherEmployeeIDList": higherEmployeeIDList,
+                "lowerEmployeeIDList" : lowerEmployeeIDList,
+                "equalEmployeeIDList" : ast.literal_eval(str(equalEmployeeIDList))
+            }
+            return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(str(e), safe=False, status=status.HTTP_400_BAD_REQUEST)
+

@@ -97,4 +97,5 @@ urlpatterns = [
 
     ###########EmployeeOrganisationChart##########
     path('api/getEmployeeOrganisationChart/', views.getEmployeeOrganisationChart.as_view()),
+    path('api/getEmployeeOrganisation/<username>/', views.getEmployeeOrganisation.as_view()),
 ]
